@@ -10,7 +10,6 @@ function checkPalindrome(str) {
   return str === reversedStr;
 
 }
-// console.log(checkPalindrome("racecar"))
 
 function numberToString(date) {
 
@@ -135,6 +134,7 @@ function getNextPalindromeDate(date){
 var dateInput = document.querySelector('#bday-input');
 var check = document.querySelector('#check');
 var output = document.querySelector('#output');
+console.log(dateInput.value)
 
 function clickHandler(e){
   var bdayStr = dateInput.value; // 2020-10-11
@@ -158,6 +158,9 @@ function clickHandler(e){
 
       output.innerText = `The next palindrome date is ${nextDate.day}-${nextDate.month}-${nextDate.year}, you missed it by ${ctr} days! `;
     }
+  }
+  else{
+    output.innerText ="Please enter your birthday!"
   }
 }
 
