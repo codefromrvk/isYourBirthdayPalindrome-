@@ -131,16 +131,85 @@ function getNextPalindromeDate(date){
   return [ctr, nextDate];
 }
 
+
+function getPrevDate(date){
+  var day = date.day - 1;  
+  var month = date.month;
+  var year = date.year;
+
+  var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; 
+
+   // check for february
+  if(month === 3){ 
+    // check for leap year
+    if(isLeapYear(year)){ 
+       if(day <1){ 
+         day = 29;
+         month--;  
+       }
+       day--;
+    }
+    else {
+       if(day === 0){
+         day = 28;
+         month--;  
+       }
+       else{
+         day--;
+       }
+    }
+  }
+  // check for other months
+  else {
+    if(day===0 && month===1){
+       month=12;
+       day = daysInMonth[month-1]; 
+       year--;
+       
+    }
+    
+ 
+  }
+
+ 
+  if(day < 1){
+    month--;
+    day = daysInMonth[month-1]; 
+  }
+
+  return {
+    day: day,  
+    month: month,
+    year: year
+  };
+}
+// console.log(getPrevDate({day:1,month:5,year:2021}));
+function getPrevPalindromeDate(date){
+  var ctr = 0;
+  var prevDate = getPrevDate(date);
+
+  while(1){
+    ctr++;
+    var isPalindrome = checkPalindromeForAllFormats(prevDate);
+    if(isPalindrome){
+      break;
+    }
+    prevDate = getPrevDate(prevDate);
+  }
+  return [ctr, prevDate];
+}
+
+
 var dateInput = document.querySelector('#bday-input');
 var check = document.querySelector('#check');
 var output = document.querySelector('#output');
-console.log(dateInput.value)
+// console.log(dateInput.value)
 
 function clickHandler(e){
-  var bdayStr = dateInput.value; // 2020-10-11
+  var bdayStr = dateInput.value; 
   
   if(bdayStr !== ''){
-    var listOfDate = bdayStr.split('-'); // ['2020', '10', '11']
+    var listOfDate = bdayStr.split('-'); 
 
     var date = {
       day: Number(listOfDate[2]),
@@ -155,12 +224,19 @@ function clickHandler(e){
     }
     else {
       var [ctr, nextDate] = getNextPalindromeDate(date);
+      var [ctr2,prevDate]= getPrevPalindromeDate(date);
 
-      output.innerText = `The next palindrome date is ${nextDate.day}-${nextDate.month}-${nextDate.year}, you missed it by ${ctr} days! `;
+      if(ctr>ctr2){
+           output.innerText = `The next palindrome date is ${prevDate.day}-${prevDate.month}-${prevDate.year}, you missed it by ${ctr2} days! `;
+      }else{
+         output.innerText = `The next palindrome date is ${nextDate.day}-${nextDate.month}-${nextDate.year}, you missed it by ${ctr} days! `;
+      }
+
+     
     }
   }
   else{
-    output.innerText ="Please enter your birthday!"
+    output.innerText ="Please enter your birth date!"
   }
 }
 
